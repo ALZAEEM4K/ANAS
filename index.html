@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ALZAEEM | The Leader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- الألوان والثيم (كما هي) --- */
+        :root {
+            --bg-main: #0f172a; 
+            --bg-gradient: linear-gradient(45deg, #0f172a, #1e1b4b);
+            --primary: #3b82f6; 
+            --secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(12px);
+            --glow: 0 0 20px rgba(139, 92, 246, 0.3);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .tech-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px; z-index: -1; pointer-events: none;
+        }
+
+        /* --- الهيدر --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000; padding: 15px 0; transition: 0.3s;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { 
+            display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 1.6rem; 
+            color: #fff; cursor: pointer; user-select: none;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo img { width: 45px; height: 45px; border-radius: 12px; border: 2px solid rgba(139, 92, 246, 0.5); box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+
+        /* زر القائمة للموبايل */
+        .menu-toggle { display: none; font-size: 1.8rem; color: #fff; cursor: pointer; transition: 0.3s; }
+        .menu-toggle:hover { color: var(--primary); }
+
+        /* القائمة العادية (ديسك توب) */
+        nav ul { display: flex; gap: 35px; }
+        nav a { color: var(--text-muted); font-weight: 600; transition: 0.3s; position: relative; }
+        nav a:hover, nav a.active { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        nav a::after {
+            content: ''; position: absolute; bottom: -5px; right: 0; width: 0; height: 2px;
+            background: var(--accent-gradient); transition: 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        /* --- الصفحات --- */
+        .page { display: none; padding-top: 100px; min-height: 100vh; opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
+        .page.active { display: block; opacity: 1; transform: translateY(0); }
+
+        /* --- العناوين --- */
+        h1 { 
+            font-size: 3.5rem; line-height: 1.1; font-weight: 900; margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        h1 span {
+            background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            position: relative; display: inline-block;
+        }
+        h1 span::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 10px;
+            background: var(--secondary); opacity: 0.3; filter: blur(10px); z-index: -1;
+        }
+        h2 { 
+            font-size: 2.5rem; text-align: center; margin-bottom: 50px; position: relative; 
+            display: inline-block; left: 50%; transform: translateX(-50%); font-weight: 800; color: #fff;
+        }
+        h2::after { 
+            content:''; display: block; width: 80px; height: 4px; 
+            background: var(--accent-gradient); margin: 15px auto; border-radius: 2px; box-shadow: var(--glow);
+        }
+        p { color: var(--text-muted); font-size: 1.15rem; line-height: 1.8; margin-bottom: 25px; }
+
+        /* --- الهيرو --- */
+        .hero { text-align: center; padding: 60px 0; position: relative; overflow: hidden; }
+        .hero-img-container {
+            position: relative; max-width: 900px; margin: 50px auto;
+            border-radius: 30px; padding: 5px; 
+            background: linear-gradient(var(--bg-main), var(--bg-main)) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary), var(--primary)) border-box;
+            border: 2px solid transparent;
+            background-size: 100% 100%, 300% 300%;
+            animation: borderRotate 4s linear infinite;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: var(--transition);
+        }
+        @keyframes borderRotate {
+            0% { background-position: 0% 0%, 0% 50%; }
+            100% { background-position: 0% 0%, 100% 50%; }
+        }
+        .hero-img-container:hover { transform: scale(1.02); box-shadow: 0 30px 60px rgba(139, 92, 246, 0.2); }
+        .hero-img { width: 100%; border-radius: 25px; display: block; }
+
+        /* --- الكروت --- */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
+        .card {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+            padding: 40px 30px; border-radius: 25px;
+            border: 1px solid var(--glass-border); text-align: center;
+            transition: var(--transition); position: relative; overflow: hidden;
+        }
+        .card:hover { 
+            transform: translateY(-10px); background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            opacity: 0; transition: 0.4s;
+        }
+        .card:hover::before { opacity: 1; }
+        .card-icon { font-size: 3.5rem; margin-bottom: 25px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card h3 { font-size: 1.4rem; margin-bottom: 15px; color: #fff; }
+
+        /* --- معرض الأعمال --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .portfolio-item {
+            position: relative; border-radius: 20px; overflow: hidden; height: 280px;
+            border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3);
+            cursor: pointer; transition: var(--transition);
+        }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; opacity: 0.8; }
+        .portfolio-item:hover img { transform: scale(1.1); opacity: 1; }
+        .portfolio-item:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); border-color: var(--primary); }
+
+        /* --- صفحة المطور --- */
+        .dev-flex { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; align-items: start; }
+        .dev-card {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+            padding: 40px; border-radius: 30px;
+            border: 1px solid var(--glass-border); text-align: center;
+            position: sticky; top: 100px; transition: var(--transition);
+        }
+        .dev-card:hover { border-color: var(--secondary); }
+        .dev-avatar {
+            width: 220px; height: 220px; border-radius: 50%; object-fit: cover;
+            border: 4px solid transparent; 
+            background: linear-gradient(#0f172a, #0f172a) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+            margin-bottom: 25px; box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+            animation: floatAvatar 6s ease-in-out infinite;
+        }
+        @keyframes floatAvatar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; justify-content: center; }
+        .tag {
+            background: rgba(255,255,255,0.05); color: #fff;
+            padding: 8px 18px; border-radius: 50px; font-size: 0.9rem; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+        }
+        .tag:hover { background: var(--accent-gradient); color: #fff; border-color: transparent; transform: scale(1.05); }
+
+        /* --- صفحة التواصل --- */
+        .contact-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .c-btn {
+            display: flex; align-items: center; justify-content: center; gap: 20px;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); padding: 35px; border-radius: 25px;
+            border: 1px solid var(--glass-border); text-decoration: none; color: #fff;
+            transition: var(--transition); font-size: 1.2rem; font-weight: bold;
+        }
+        .c-btn i { font-size: 2.5rem; transition: 0.3s; }
+        .c-btn:hover { 
+            transform: translateY(-8px); background: rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .c-btn:hover i { transform: scale(1.2) rotate(10deg); }
+
+        .contact-form {
+            max-width: 700px; margin: 0 auto; background: var(--glass-bg); backdrop-filter: var(--glass-blur); padding: 50px; border-radius: 30px;
+            border: 1px solid var(--glass-border);
+        }
+        .input-group { margin-bottom: 25px; }
+        .input-field {
+            width: 100%; padding: 18px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
+            color: #fff; font-family: 'Cairo'; font-size: 1rem; transition: 0.3s;
+        }
+        .input-field:focus { 
+            outline: none; border-color: var(--secondary); 
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+            background: rgba(0,0,0,0.5);
+        }
+        .btn-main {
+            width: 100%; padding: 20px; background: var(--accent-gradient); color: #fff; border: none; border-radius: 15px;
+            font-size: 1.2rem; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+        .btn-main:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5); 
+            filter: brightness(1.1);
+        }
+
+        /* --- لوحة التحكم --- */
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;
+            justify-content: center; align-items: center; backdrop-filter: blur(8px);
+        }
+        .modal-box {
+            background: #1e293b; padding: 40px; border-radius: 30px; width: 90%; max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .modal-title { color: #fff; font-size: 1.8rem; margin-bottom: 30px; text-align: center; font-weight: 900; }
+        .admin-input {
+            width: 100%; padding: 15px; background: #0f172a; border: 1px solid #334155; color: #fff;
+            border-radius: 10px; margin-bottom: 20px; font-family: monospace; font-size: 1rem;
+        }
+        .admin-input:focus { border-color: var(--primary); outline: none; }
+        .admin-label { display: block; color: #94a3b8; margin-bottom: 8px; font-size: 0.9rem; }
+        
+        footer {
+            background: rgba(0,0,0,0.5); padding: 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 50px; backdrop-filter: blur(5px);
+        }
+        .footer-admin-link { color: #334155; font-size: 0.7rem; text-decoration: none; margin-top: 10px; display: inline-block; }
+        .footer-admin-link:hover { color: #fff; }
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
+
+        /* --- ========================================= --- */
+        /* --- إعدادات الموبايل (Mobile Responsive 100/100) --- */
+        /* --- ========================================= */
+        @media (max-width: 768px) {
+            /* إظهار زر القائمة */
+            .menu-toggle { display: block; }
+
+            /* تصميم القائمة المنسدلة (Overlay) */
+            nav {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: rgba(15, 23, 42, 0.98); /* خلفية داكنة شبه شفافة */
+                backdrop-filter: blur(20px);
+                z-index: 999; /* فوق كل شيء */
+                display: flex; flex-direction: column; justify-content: center; align-items: center;
+                transform: translateY(-100%); /* مخفية للأعلى */
+                transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                opacity: 0; pointer-events: none;
+            }
+
+            /* عند تفعيل الكلاس active */
+            nav.active {
+                transform: translateY(0);
+                opacity: 1; pointer-events: all;
+            }
+
+            /* زر الإغلاق داخل القائمة */
+            .close-menu-btn {
+                position: absolute; top: 30px; left: 30px; /* في اليسار في الـ RTL */
+                font-size: 2.5rem; color: #fff; cursor: pointer; transition: 0.3s;
+            }
+            .close-menu-btn:hover { color: var(--secondary); transform: rotate(90deg); }
+
+            /* روابط القائمة */
+            nav ul { flex-direction: column; gap: 40px; text-align: center; }
+            nav a { font-size: 1.8rem; font-weight: 800; color: #fff; }
+            nav a::after { display: none; } /* إخفاء الخط السفلي في الموبايل */
+
+            /* ضبط العناوين للشاشات الصغيرة */
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            .hero { padding: 40px 0; }
+            .hero-img-container { margin: 30px auto; padding: 3px; }
+            
+            /* الكروت والمعرض */
+            .grid-3 { grid-template-columns: 1fr; gap: 20px; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .portfolio-item { height: 220px; }
+            
+            /* صفحة المطور */
+            .dev-flex { grid-template-columns: 1fr; }
+            .dev-card { position: static; padding: 30px 20px; margin-bottom: 30px; }
+            .dev-avatar { width: 180px; height: 180px; }
+            
+            /* الفورم والأزرار */
+            .contact-form { padding: 30px 20px; }
+            .contact-btns { grid-template-columns: 1fr; }
+            
+            /* الهيدر */
+            header { padding: 15px 20px; }
+            .nav-content { padding: 0; }
+            .logo { font-size: 1.4rem; }
+            .logo img { width: 35px; height: 35px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tech-grid"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-content">
+            <!-- زر القائمة (يظهر فقط في الموبايل) -->
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <div class="logo" id="logoTrigger">
+                <img src="13.png" alt="Logo" onerror="this.src='https://via.placeholder.com/50/1e293b/3b82f6?text=Z'">
+                ALZAEEM <span>.DEV</span>
+            </div>
+            
+            <!-- القائمة -->
+            <nav id="mobileNav">
+                <!-- زر الإغلاق (يظهر فقط في الموبايل) -->
+                <div class="close-menu-btn" onclick="toggleMenu()">
+                    <i class="fas fa-times"></i>
+                </div>
+
+                <ul>
+                    <li><a href="#" onclick="showPage('home'); toggleMenu()" class="active" id="nav-home">الرئيسية</a></li>
+                    <li><a href="#" onclick="showPage('developer'); toggleMenu()" id="nav-developer">المطور</a></li>
+                    <li><a href="#" onclick="showPage('contact'); toggleMenu()" id="nav-contact">تواصل معي</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- === الصفحة الرئيسية === -->
+    <main id="home" class="page active">
+        <div class="container">
+            <section class="hero reveal-up">
+                <h1 id="heroTitle">بناء إمبراطوريتك <br><span>بيد خبيرة</span></h1>
+                <p>تصميم فريد | سرعة خيالية | تقنية متطورة</p>
+                <div class="hero-img-container">
+                    <img src="14.png" class="hero-img" alt="Hero Cover" onerror="this.src='https://via.placeholder.com/900x500/1e293b/3b82f6?text=Cover'">
+                </div>
+            </section>
+
+            <section class="reveal-up">
+                <h2>مميزاتنا</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <i class="fas fa-bolt card-icon"></i>
+                        <h3>سرعة 48 ساعة</h3>
+                        <p>تسليم المشاريع في وقت قياسي بأعلى معايير الجودة.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-layer-group card-icon"></i>
+                        <h3>تصميم مخصص</h3>
+                        <p>كل تفصيلة مصممة خصيصاً لتميز هويتك الرقمية.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-mobile-alt card-icon"></i>
+                        <h3>تجاوب كامل</h3>
+                        <p>تجربة مستخدم مثالية على جميع الأجهزة والشاشات.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="reveal-up">
+                <h2>معرض الأعمال</h2>
+                <div class="portfolio-grid" id="portfolioGrid"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- === صفحة المطور === -->
+    <main id="developer" class="page">
+        <div class="container">
+            <div class="dev-flex">
+                <div class="dev-card reveal-up">
+                    <img src="15.png" class="dev-avatar" alt="Anas Ahmed" onerror="this.src='https://via.placeholder.com/200/1e293b/8b5cf6?text=Anas'">
+                    <h3>أنس أحمد صبري</h3>
+                    <p style="color: var(--primary); font-weight: bold;">ALZAEEM | The Leader</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">مطور ويب ومصمم واجهات</p>
+                    <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div><strong style="color:#fff; font-size:1.2rem;">+135</strong><br><span style="font-size:0.8rem; color:#888;">مشروع</span></div>
+                        <div><strong style="color:#fff; font-size:1.2rem;">+5000</strong><br><span style="font-size:0.8rem; color:#888;">ساعة</span></div>
+                    </div>
+                </div>
+                <div class="dev-content reveal-up">
+                    <h2>عني</h2>
+                    <p>أنا أنس أحمد صبري، المعروف بـ "الزعيم". بدأت رحلتي في عام 2023 بهدف واحد: بناء إمبراطورية برمجية قائمة على الجودة والسرعة المفرطة.</p>
+                    <p>شغفي ليس فقط في كتابة الكود، بل في خلق تجارب رقمية لا تنسى. أرفض استخدام القوالب الجاهزة، وكل سطر أكتبه هو فن.</p>
+                    <h3 style="margin-top: 40px; color: #fff;">الخبرات التقنية</h3>
+                    <div class="tech-tags">
+                        <span class="tag">HTML5</span>
+                        <span class="tag">CSS3 & Animations</span>
+                        <span class="tag">JavaScript (ES6+)</span>
+                        <span class="tag">Responsive Design</span>
+                        <span class="tag">UI/UX Design</span>
+                        <span class="tag">Performance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- === صفحة التواصل === -->
+    <main id="contact" class="page">
+        <div class="container">
+            <div class="hero reveal-up" style="padding: 20px 0;">
+                <h1>تواصل معي</h1>
+                <p>جاهز لتنفيذ مشروعك القادم. اختر الطريقة المفضلة.</p>
+            </div>
+            <div class="contact-btns reveal-up">
+                <a href="https://wa.me/201066472268" target="_blank" class="c-btn">
+                    <i class="fab fa-whatsapp" style="color:#25D366"></i> واتساب
+                </a>
+                <a href="https://t.me/V_X_Z_Z" target="_blank" class="c-btn">
+                    <i class="fab fa-telegram" style="color:#0088cc"></i> تيليجرام
+                </a>
+                <a href="https://www.facebook.com/ALZAEEM.4K" target="_blank" class="c-btn">
+                    <i class="fab fa-facebook" style="color:#1877F2"></i> فيسبوك
+                </a>
+                <a href="tel:01066472268" class="c-btn">
+                    <i class="fas fa-phone-alt"></i> اتصال
+                </a>
+            </div>
+            <div class="contact-form reveal-up">
+                <h3 style="text-align: center; color: #fff; margin-bottom: 30px;">رسالة سريعة</h3>
+                <form id="telegramForm">
+                    <div class="input-group">
+                        <input type="text" id="t_name" class="input-field" placeholder="الاسم" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="t_phone" class="input-field" placeholder="رقم الهاتف" required>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="t_msg" class="input-field" rows="5" placeholder="تفاصيل المشروع" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-main">إرسال <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 ALZAEEM. All Rights Reserved.</p>
+        <a href="#" onclick="openAdmin()" class="footer-admin-link">Admin Login</a>
+    </footer>
+
+    <!-- === لوحة التحكم === -->
+    <div class="modal" id="passModal">
+        <div class="modal-box" style="text-align: center; max-width: 400px;">
+            <h3 class="modal-title" style="font-size: 1.5rem;">تأكيد الهوية</h3>
+            <input type="password" id="passInput" class="admin-input" placeholder="كلمة المرور" style="text-align: center;">
+            <button onclick="checkPass()" class="btn-main" style="font-size: 1rem;">دخول</button>
+            <button onclick="closeModal('passModal')" style="background:none; border:none; color:#94a3b8; margin-top:15px; cursor:pointer;">إلغاء</button>
+        </div>
+    </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-box">
+            <h3 class="modal-title">لوحة التحكم</h3>
+            <label class="admin-label">Facebook Pixel ID</label>
+            <input type="text" id="admin_fb_pixel" class="admin-input" placeholder="مثال: 123456789">
+            <label class="admin-label">IP Pixel / Custom Code</label>
+            <textarea id="admin_ip_pixel" class="admin-input" rows="4" placeholder="كود IP Pixel..."></textarea>
+            <button onclick="saveSettings()" class="btn-main">حفظ وتفعيل</button>
+            <button onclick="closeModal('adminModal')" style="background:none; border:none; color:#94a3b8; margin-top:15px; cursor:pointer; width:100%;">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Portfolio Generation ---
+        const grid = document.getElementById('portfolioGrid');
+        for(let i=1; i<=12; i++) {
+            const item = document.createElement('div');
+            item.className = 'portfolio-item reveal-up';
+            const img = document.createElement('img');
+            img.src = `${i}.png`;
+            img.alt = `Work ${i}`;
+            img.loading = "lazy";
+            img.onerror = function() {
+                this.style.display = 'none';
+                item.innerHTML = `<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#ef4444; font-size:0.8rem; text-align:center;">صورة ${i}.png<br>غير موجودة</div>`;
+            };
+            item.appendChild(img);
+            grid.appendChild(item);
+        }
+
+        // --- Scroll Animation ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+        // --- Navigation ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // --- Mobile Menu Logic (القائمة المنسدلة) ---
+        function toggleMenu() {
+            const nav = document.getElementById('mobileNav');
+            const body = document.body;
+            
+            // تبديل الكلاس لفتح وإغلاق القائمة
+            nav.classList.toggle('active');
+
+            // قفل أو فك قفل التمرير في الصفحة الرئيسية
+            if(nav.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Admin Logic ---
+        const PASS = "AnasAhmed500600##$";
+        let clicks = 0, timer;
+
+        document.getElementById('logoTrigger').addEventListener('click', () => {
+            clicks++;
+            clearTimeout(timer);
+            timer = setTimeout(() => clicks = 0, 800);
+            if(clicks >= 3) {
+                openAdmin();
+                clicks = 0;
+            }
+        });
+
+        function openAdmin() { document.getElementById('passModal').style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function checkPass() {
+            if(document.getElementById('passInput').value === PASS) {
+                closeModal('passModal');
+                document.getElementById('passInput').value = '';
+                const settings = JSON.parse(localStorage.getItem('alz_settings')) || {};
+                document.getElementById('admin_fb_pixel').value = settings.fb_pixel || '';
+                document.getElementById('admin_ip_pixel').value = settings.ip_pixel || '';
+                document.getElementById('adminModal').style.display = 'flex';
+            } else { alert('كلمة المرور خاطئة'); }
+        }
+
+        function saveSettings() {
+            const fb_pixel = document.getElementById('admin_fb_pixel').value;
+            const ip_pixel = document.getElementById('admin_ip_pixel').value;
+            localStorage.setItem('alz_settings', JSON.stringify({ fb_pixel, ip_pixel }));
+            alert('تم الحفظ! سيتم إعادة التحميل.');
+            closeModal('adminModal');
+            location.reload();
+        }
+
+        // --- Pixel Injection ---
+        const settings = JSON.parse(localStorage.getItem('alz_settings')) || {};
+        if(settings.fb_pixel) {
+            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', settings.fb_pixel); fbq('track', 'PageView');
+        }
+        if(settings.ip_pixel) {
+            const script = document.createElement('script');
+            script.innerHTML = settings.ip_pixel;
+            document.head.appendChild(script);
+        }
+
+        // --- Bot ---
+        const BOT_TOKEN = '8540222402:AAFAnpeAt2SzcadQ_1bdFRYbTRMxMYZz_T4';
+        document.getElementById('telegramForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = `🚀 طلب جديد:\n👤 ${document.getElementById('t_name').value}\n📱 ${document.getElementById('t_phone').value}\n💬 ${document.getElementById('t_msg').value}`;
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=7196415365&text=${encodeURIComponent(text)}`)
+            .then(() => alert('تم الإرسال!'))
+            .catch(() => alert('خطأ'));
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
