@@ -7,14 +7,14 @@
     
     <!-- --- SEO & Social Sharing --- -->
     <meta name="description" content="موقع ALZAEEM - مطور ويب محترف يبني إمبراطوريتك الرقمية بتصميم فريد وأداء خيالي.">
-    <meta name="robots" content="index, follow"> <!-- 1. دعوة محركات البحث -->
+    <meta name="robots" content="index, follow">
     <meta property="og:title" content="ALZAEEM | The Leader">
     <meta property="og:description" content="تصميم فريد | سرعة خيالية | تقنية متطورة. جاهز لبناء موقعك التالي.">
     <meta property="og:image" content="14.png">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#0f172a">
 
-    <!-- 2. تحسين سرعة تحميل الخطوط (Font Preconnect) -->
+    <!-- 2. Font Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- إعدادات الألوان --- */
+        /* --- إعدادات الألوان والمتغيرات --- */
         :root {
             --bg-main: #0f172a; 
             --primary: #3b82f6; 
@@ -43,37 +43,34 @@
             background-color: var(--bg-main);
             color: var(--text-main);
             overflow-x: hidden;
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
-            background-size: 400% 400%;
+            position: relative;
         }
 
-        /* تشغيل الحركة على الديسك توب فقط */
-        @media (min-width: 769px) {
-            body { animation: gradientBG 15s ease infinite; }
+        /* --- خلفية الرسوم المتحركة (Canvas Container) --- */
+        #canvas-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
+        /* --- Tech Grid Overlay --- */
         .tech-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px; z-index: -1; pointer-events: none;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: -1; pointer-events: none;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
         }
 
         /* --- الهيدر --- */
         header {
             position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(15, 23, 42, 0.9); 
+            background: rgba(15, 23, 42, 0.85); 
             backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000; padding: 15px 0; transition: 0.3s;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
         
         .nav-content { display: flex; justify-content: space-between; align-items: center; }
         
@@ -239,7 +236,7 @@
         .input-group { margin-bottom: 25px; }
         .input-field {
             width: 100%; padding: 18px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
-            color: #fff; font-family: 'Cairo'; font-size: 16px; /* Fix iPhone Zoom */ transition: 0.3s;
+            color: #fff; font-family: 'Cairo'; font-size: 16px; transition: 0.3s;
         }
         .input-field:focus { 
             outline: none; border-color: var(--secondary); 
@@ -250,29 +247,62 @@
             width: 100%; padding: 20px; background: var(--accent-gradient); color: #fff; border: none; border-radius: 15px;
             font-size: 1.2rem; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase;
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            position: relative; overflow: hidden;
+        }
+        .btn-main::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
         }
         .btn-main:hover { 
             transform: translateY(-3px); 
             box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5); 
             filter: brightness(1.1);
         }
+        .btn-main:hover::after { left: 100%; }
 
-        /* --- لوحة التحكم --- */
+        /* --- Toast Notification System --- */
+        #toast-container {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 10000; display: flex; flex-direction: column; gap: 10px;
+            width: 90%; max-width: 400px; pointer-events: none;
+        }
+        .toast {
+            background: rgba(30, 41, 59, 0.95); color: #fff;
+            padding: 15px 25px; border-radius: 12px;
+            border-right: 4px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            font-size: 1rem; font-weight: 600;
+            display: flex; align-items: center; gap: 12px;
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { border-color: #10b981; }
+        .toast.error { border-color: #ef4444; }
+        .toast i { font-size: 1.2rem; }
+
+        /* --- Modals --- */
         .modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999;
             justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
         }
         .modal-box {
             background: #1e293b; padding: 40px; border-radius: 30px; width: 90%; max-width: 500px;
             border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9); transition: 0.3s;
         }
+        .modal.active .modal-box { transform: scale(1); }
         .modal-title { color: #fff; font-size: 1.8rem; margin-bottom: 30px; text-align: center; font-weight: 900; }
         .admin-input {
             width: 100%; padding: 15px; background: #0f172a; border: 1px solid #334155; color: #fff;
-            border-radius: 10px; margin-bottom: 20px; font-family: monospace; font-size: 16px; /* Fix Zoom */
+            border-radius: 10px; margin-bottom: 20px; font-family: monospace; font-size: 16px;
+            text-align: center;
         }
-        .admin-input:focus { border-color: var(--primary); outline: none; }
-        .admin-label { display: block; color: #94a3b8; margin-bottom: 8px; font-size: 0.9rem; }
+        .admin-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+        .admin-label { display: block; color: #94a3b8; margin-bottom: 8px; font-size: 0.9rem; text-align: right; }
         
         footer {
             background: rgba(0,0,0,0.5); padding: 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 50px; backdrop-filter: blur(5px);
@@ -284,7 +314,7 @@
 
         /* --- Mobile Optimizations --- */
         @media (max-width: 768px) {
-            nav, .card, .c-btn, .contact-form, .dev-card {
+            nav, .card, .c-btn, .contact-form, .dev-card, .toast {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
             }
@@ -299,11 +329,11 @@
 
             nav {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-                background: #0f172a;
+                background: rgba(15, 23, 42, 0.98);
                 z-index: 999;
                 display: flex; flex-direction: column; justify-content: center; align-items: center;
                 transform: translateY(-100%);
-                transition: transform 0.4s ease-out;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 opacity: 0; pointer-events: none;
             }
             nav.active { transform: translateY(0); opacity: 1; pointer-events: all; }
@@ -320,12 +350,7 @@
             nav a::after { display: none; }
 
             h1 { font-size: 2.2rem; }
-            h2 { 
-                font-size: 1.8rem; 
-                margin-bottom: 35px; 
-                width: 100%; 
-                padding: 0 10px; 
-            }
+            h2 { font-size: 1.8rem; margin-bottom: 35px; width: 100%; padding: 0 10px; }
             p { font-size: 1rem; }
 
             .hero { padding: 30px 0; }
@@ -352,11 +377,17 @@
             .container { padding: 0 15px; }
             .logo { font-size: 1.3rem; }
             .logo img { width: 35px; height: 35px; }
+            
+            #toast-container { width: 95%; left: 2.5%; bottom: 20px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Canvas Background for 2D Animation -->
+    <div id="canvas-container">
+        <canvas id="bg-canvas"></canvas>
+    </div>
     <div class="tech-grid"></div>
 
     <!-- Header -->
@@ -391,7 +422,6 @@
                 <h1 id="heroTitle">بناء إمبراطوريتك <br><span>بيد خبيرة</span></h1>
                 <p>تصميم فريد | سرعة خيالية | تقنية متطورة</p>
                 <div class="hero-img-container">
-                    <!-- Hero Image with decoding="async" -->
                     <img src="14.png" class="hero-img" alt="ALZAEEM Cover" loading="eager" decoding="async" onerror="this.src='https://via.placeholder.com/900x500/1e293b/3b82f6?text=Cover'">
                 </div>
             </section>
@@ -491,16 +521,21 @@
                     <div class="input-group">
                         <textarea id="t_msg" class="input-field" rows="5" placeholder="تفاصيل المشروع" required></textarea>
                     </div>
-                    <button type="submit" class="btn-main">إرسال <i class="fas fa-paper-plane"></i></button>
+                    <button type="submit" class="btn-main" id="submitBtn">
+                        <span>إرسال</span> <i class="fas fa-paper-plane"></i>
+                    </button>
                 </form>
             </div>
         </div>
     </main>
 
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 ALZAEEM. All Rights Reserved.</p>
-        <a href="#" onclick="openAdmin()" class="footer-admin-link">Admin Login</a>
+        <a href="#" onclick="openAdmin()" class="footer-admin-link">Admin Access</a>
     </footer>
 
     <!-- === لوحة التحكم === -->
@@ -526,7 +561,127 @@
     </div>
 
     <script>
-        // --- Portfolio Generation (With Performance Optimizations) ---
+        // --- Toast Notification System ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>';
+            
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            container.appendChild(toast);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 400); // Wait for transition
+            }, 3000);
+        }
+
+        // --- Canvas Animation Engine (Particle Network) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() * 1.5 - 0.75) * 0.5; // Slower speed
+                this.speedY = (Math.random() * 1.5 - 0.75) * 0.5;
+                this.color = `rgba(59, 130, 246, ${Math.random() * 0.5 + 0.1})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+                // Mouse interaction
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const directionX = forceDirectionX * force * 2;
+                        const directionY = forceDirectionY * force * 2;
+                        this.x -= directionX;
+                        this.y -= directionY;
+                    }
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = (canvas.width * canvas.height) / 15000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // Draw connections
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx*dx + dy*dy);
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${1 - distance/120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // --- Portfolio Generation ---
         const grid = document.getElementById('portfolioGrid');
         for(let i=1; i<=12; i++) {
             const item = document.createElement('div');
@@ -534,11 +689,15 @@
             const img = document.createElement('img');
             img.src = `${i}.png`;
             img.alt = `Work ${i}`;
-            img.loading = "lazy"; // Lazy Load
-            img.decoding = "async"; // Async Decoding (Performance Boost)
+            img.loading = "lazy";
+            img.decoding = "async";
             img.onerror = function() {
                 this.style.display = 'none';
-                item.innerHTML = `<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#ef4444; font-size:0.8rem; text-align:center;">صورة ${i}.png<br>غير موجودة</div>`;
+                item.style.border = '2px dashed #334155';
+                item.style.display = 'flex';
+                item.style.alignItems = 'center';
+                item.style.justifyContent = 'center';
+                item.innerHTML = `<span style="color:#64748b; font-size:0.9rem;">Project ${i}</span>`;
             };
             item.appendChild(img);
             grid.appendChild(item);
@@ -562,11 +721,12 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            document.getElementById('nav-' + pageId).classList.add('active');
-            window.scrollTo(0,0);
+            const navLink = document.getElementById('nav-' + pageId);
+            if(navLink) navLink.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- Mobile Menu Logic ---
+        // --- Mobile Menu ---
         function toggleMenu() {
             const nav = document.getElementById('mobileNav');
             const body = document.body;
@@ -575,8 +735,6 @@
         }
 
         // --- Admin Logic ---
-        // تنبيه أمني: في بيئة الإنتاج الحقيقية، يجب عدم وضع كلمة المرور أو التوكن في كود الفرونت إند.
-        // بما أن هذا موقع Static، فإن هذا هو الحل الوحيد المتاح داخل ملف HTML واحد.
         const PASS = "AnasAhmed500600##$";
         let clicks = 0, timer;
 
@@ -590,27 +748,40 @@
             }
         });
 
-        function openAdmin() { document.getElementById('passModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function openAdmin() { 
+            const modal = document.getElementById('passModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
 
         function checkPass() {
-            if(document.getElementById('passInput').value === PASS) {
+            const input = document.getElementById('passInput');
+            if(input.value === PASS) {
                 closeModal('passModal');
-                document.getElementById('passInput').value = '';
+                input.value = '';
                 const settings = JSON.parse(localStorage.getItem('alz_settings')) || {};
                 document.getElementById('admin_fb_pixel').value = settings.fb_pixel || '';
                 document.getElementById('admin_ip_pixel').value = settings.ip_pixel || '';
-                document.getElementById('adminModal').style.display = 'flex';
-            } else { alert('كلمة المرور خاطئة'); }
+                const adminModal = document.getElementById('adminModal');
+                adminModal.style.display = 'flex';
+                setTimeout(() => adminModal.classList.add('active'), 10);
+            } else { 
+                showToast('كلمة المرور خاطئة', 'error'); 
+            }
         }
 
         function saveSettings() {
             const fb_pixel = document.getElementById('admin_fb_pixel').value;
             const ip_pixel = document.getElementById('admin_ip_pixel').value;
             localStorage.setItem('alz_settings', JSON.stringify({ fb_pixel, ip_pixel }));
-            alert('تم الحفظ! سيتم إعادة التحميل.');
+            showToast('تم حفظ الإعدادات بنجاح');
             closeModal('adminModal');
-            location.reload();
+            setTimeout(() => location.reload(), 1500);
         }
 
         // --- Pixel Injection ---
@@ -625,17 +796,41 @@
             document.head.appendChild(script);
         }
 
-        // --- Bot ---
-        // تنبيه أمني: التوكن مكشوف هنا لغرض العمل على ملف Static.
+        // --- Bot Form Submission ---
+        // TODO: Move token to backend proxy for security
         const BOT_TOKEN = '8540222402:AAFAnpeAt2SzcadQ_1bdFRYbTRMxMYZz_T4';
         document.getElementById('telegramForm').addEventListener('submit', (e) => {
             e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
             const text = `🚀 طلب جديد:\n👤 ${document.getElementById('t_name').value}\n📱 ${document.getElementById('t_phone').value}\n💬 ${document.getElementById('t_msg').value}`;
+            
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=7196415365&text=${encodeURIComponent(text)}`)
-            .then(() => alert('تم الإرسال!'))
-            .catch(() => alert('خطأ'));
-            e.target.reset();
+            .then(response => response.json())
+            .then(data => {
+                if(data.ok) {
+                    showToast('تم إرسال رسالتك بنجاح!', 'success');
+                    e.target.reset();
+                } else {
+                    showToast('حدث خطأ أثناء الإرسال', 'error');
+                }
+            })
+            .catch(() => showToast('فشل الاتصال، حاول مرة أخرى', 'error'))
+            .finally(() => {
+                btn.innerHTML = originalContent;
+                btn.style.opacity = '1';
+                btn.disabled = false;
+            });
         });
+
+        // --- Initialize Canvas ---
+        resizeCanvas();
+        animateCanvas();
+
     </script>
 </body>
 </html>
